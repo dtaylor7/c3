@@ -1108,6 +1108,7 @@
             axis_x_tick_rotate: 0,
             axis_x_tick_outer: true,
             axis_x_tick_multiline: true,
+            axis_x_tick_height: "0",
             axis_x_tick_width: null,
             axis_x_max: undefined,
             axis_x_min: undefined,
@@ -4188,6 +4189,7 @@
             axisParams = {
                 isCategory: $$.isCategorized(),
                 withOuterTick: withOuterTick,
+                tickHeight: config.axis_x_tick_height,
                 tickMultiline: config.axis_x_tick_multiline,
                 tickWidth: config.axis_x_tick_width,
                 tickTextRotate: withoutRotateTickText ? 0 : config.axis_x_tick_rotate,
@@ -4224,13 +4226,14 @@
         return tickValues;
     };
     Axis.prototype.getYAxis = function getYAxis(scale, orient, tickFormat, tickValues, withOuterTick, withoutTransition) {
-        var axisParams = {
-            withOuterTick: withOuterTick,
-            withoutTransition: withoutTransition,
-        },
-            $$ = this.owner,
+        var $$ = this.owner,
             d3 = $$.d3,
             config = $$.config,
+            axisParams = {
+                withOuterTick: withOuterTick,
+                withoutTransition: withoutTransition,
+                tickHeight: config.axis_x_tick_height
+            },
             axis = c3_axis(d3, axisParams).scale(scale).orient(orient).tickFormat(tickFormat);
         if ($$.isTimeSeriesY()) {
             axis.ticks(d3.time[config.axis_y_tick_time_value], config.axis_y_tick_time_interval);
@@ -6687,7 +6690,7 @@
 
         function axisX(selection, x) {
             selection.attr("transform", function (d) {
-                return "translate(" + Math.ceil(x(d) + tickOffset) + ", 20)";
+                return "translate(" + Math.ceil(x(d) + tickOffset) + ", " + params.tickHeight + ")";
             });
         }
         function axisY(selection, y) {
